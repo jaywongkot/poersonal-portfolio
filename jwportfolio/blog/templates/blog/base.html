@@ -43,7 +43,17 @@
     <main role="main" class="container">
         <div class="row">
             <div class="col-md-8">
+            <!-- We check a message from register.html and display wether if the registration is error or success -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             {% block content %}{% endblock %}
+
             </div>
             <div class="col-md-4">
             <div class="content-section">

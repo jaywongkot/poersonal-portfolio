@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     # My apps
     'core.apps.CoreConfig',
     'blog.apps.BlogConfig',
+    'users.apps.UsersConfig',
+    'crispy_forms', # Add a crispy_form to format our registration form
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -127,3 +129,5 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
