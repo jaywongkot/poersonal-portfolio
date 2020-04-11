@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
-    'crispy_forms', # Add a crispy_form to format our registration form
+    'crispy_forms',  # Add a crispy_form to format our registration form
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -131,3 +131,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = 'blog-home'
+LOGIN_URL = 'login'

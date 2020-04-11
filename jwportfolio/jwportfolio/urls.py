@@ -16,12 +16,19 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    path('blog/register/', user_views.register, name='register'),    
-    path('blog/', include('blog.urls')),    
+
+    path('blog/', include('blog.urls')),
+    path('blog/register/', user_views.register, name='register'),
+    path('blog/profile/', user_views.profile, name='profile'),
+    # This a class base view
+    path('blog/login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('blog/logout/', auth_views.LogoutView.as_view(
+        template_name='users/logout.html'), name='logout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
