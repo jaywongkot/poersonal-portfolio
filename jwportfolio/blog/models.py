@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 # Import user model from Django library
 from django.contrib.auth.models import User
+# Import reverse function
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -21,3 +23,8 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    # Create a function to redirect a new post revese back to a post that just created
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={'pk': self.pk})
+        # return reverse('blog-home') # Set return to blog-home page

@@ -1,6 +1,10 @@
 from django.shortcuts import render
 # Here we import ListView and DetailView which is a class based view
-from django.views.generic import ListView, DetailView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView
+)
 # From a models.py in the same directory, we import a Post class
 from .models import Post
 # Import HttpResponse only need when we want to return http resquest function
@@ -53,6 +57,20 @@ class PostListView(ListView):
 
 class PostDetailView(DetailView):  # We create a PostDetailView for each post
     model = Post  # Render a template as default which is post_detail.html
+
+
+class PostCreateView(CreateView):
+    model = Post
+    fields = ['title', 'content']
+
+    # Overide a form valid mehtod to allow the author to create a new post
+    # that will allow us to add the author before the form submit
+    def form_valid(self, form):
+        # Basically this is saying hey that forum that you are trying to submit before you do that
+        # take that instance and set the author equal to the current logged end user
+        form.instance.author = self.request.user
+        # Then we can validate the form
+        return super().form_valid(form)
 
 
 def about(request):
