@@ -1,23 +1,26 @@
 from django.shortcuts import render
+# Here we import ListView and DetailView which is a class based view
+from django.views.generic import ListView, DetailView
 # From a models.py in the same directory, we import a Post class
 from .models import Post
-# from django.http import HttpResponse # Import HttpResponse only need when we want to return http resquest function
+# Import HttpResponse only need when we want to return http resquest function
+# from django.http import HttpResponse
 
 # We created dummy posts to render in home view and to loop through in home.html template
-posts = [
-    {
-        'author': 'JayWongkot',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 05, 2020'
-    },
-    {
-        'author': 'Oppa Aui',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 06, 2020'
-    }
-]
+# posts = [
+#     {
+#         'author': 'JayWongkot',
+#         'title': 'Blog Post 1',
+#         'content': 'First post content',
+#         'date_posted': 'April 05, 2020'
+#     },
+#     {
+#         'author': 'Oppa Aui',
+#         'title': 'Blog Post 2',
+#         'content': 'Second post content',
+#         'date_posted': 'April 06, 2020'
+#     }
+# ]
 
 
 def home(request):
@@ -33,6 +36,23 @@ def home(request):
     # return HttpResponse('<h1>Blog Home</h1>')
     # We passed in a third argument as 'context' to render a dummy post
     return render(request, 'blog/home.html', context)
+
+# Create a class based view and use a ListView to render our post list
+
+
+class PostListView(ListView):
+    model = Post
+    # We hav to change a location of template where will look to render on homepage from blog/post_list.html to blog/home.html
+    template_name = 'blog/home.html'  # <app>/<model>_<viewtype>.html
+    # By default, django will list our post base on a list variable
+    # but in our case we have set our post list variable to posts as in context
+    context_object_name = 'posts'
+    # Reorder post from the latest post to oldest post
+    ordering = ['-date_posted']
+
+
+class PostDetailView(DetailView):  # We create a PostDetailView for each post
+    model = Post  # Render a template as default which is post_detail.html
 
 
 def about(request):

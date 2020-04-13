@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <!-- Here we will access a post variable to access a post dictionary and to get a title variable -->
+    <article class="media content-section">
+        <!-- Set author image along with each post -->
+        <!-- When we dealing DetailView, it expects the context of this template to be called object not post -->
+        <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+        <div class="media-body">
+            <div class="article-metadata">
+            <a class="mr-2" href="#">{{ object.author }}</a>
+            <!-- post.date_posted | date:" F d, Y" is the way to specify a date format.
+                Reference  https://docs.djangoproject.com/en/3.0/ref/templates/builtins/#date -->
+            <small class="text-muted">{{ object.date_posted | date:" F d, Y" }}</small>
+            </div>
+            <h2 class="article-title">{{ object.title }}</h2>
+            <p class="article-content">{{ object.content }}</p>
+        </div>
+    </article>
+{% endblock content %}
