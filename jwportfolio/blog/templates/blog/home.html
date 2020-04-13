@@ -4,6 +4,8 @@
     {% for post in posts %}
         <!-- Here we will access a post variable to access a post dictionary and to get a title variable -->
         <article class="media content-section">
+            <!-- Set author image along with each post -->
+            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
             <div class="media-body">
                 <div class="article-metadata">
                 <a class="mr-2" href="#">{{ post.author }}</a>
