@@ -3,7 +3,9 @@ from django.urls import path
 from .views import (
     PostListView,
     PostDetailView,
-    PostCreateView
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView
 )
 # Import views for function based view
 from . import views
@@ -16,6 +18,8 @@ urlpatterns = [
     # This one will actually share a template with the update view that we're going to be creating and
     # they actually expect this template to be the name of the model followed by underscore form (post_form.html)
     path('post/new/', PostCreateView.as_view(), name='post-create'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
     # Use function based view to render blog-homepage
     # path('', views.home, name='blog-home'),
     path('about/', views.about, name='blog-about'),

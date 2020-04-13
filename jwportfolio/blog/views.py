@@ -1,9 +1,14 @@
 from django.shortcuts import render
+# Import LoginRequiredMixin function to require login to create a new post
+# Import UserPassesTestMixin function to set an update post stick to the author of that post
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Here we import ListView and DetailView which is a class based view
 from django.views.generic import (
     ListView,
     DetailView,
-    CreateView
+    CreateView,
+    UpdateView,
+    DeleteView
 )
 # From a models.py in the same directory, we import a Post class
 from .models import Post
@@ -59,7 +64,8 @@ class PostDetailView(DetailView):  # We create a PostDetailView for each post
     model = Post  # Render a template as default which is post_detail.html
 
 
-class PostCreateView(CreateView):
+# In order to create a new post, you are required to login as LoginRequiredMixin
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
 
@@ -71,6 +77,37 @@ class PostCreateView(CreateView):
         form.instance.author = self.request.user
         # Then we can validate the form
         return super().form_valid(form)
+
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # Check if the user who try to update the post is the post author
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    # Set a redirect to blog-home page after deleted a post
+    success_url = '/blog/'
+    # Set a redirect to home page after deleted a post
+    # success_url = '/'
+
+    # Check if the user who try to update the post is the post author
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 
 def about(request):
