@@ -5,7 +5,8 @@ from .views import (
     PostDetailView,
     PostCreateView,
     PostUpdateView,
-    PostDeleteView
+    PostDeleteView,
+    UserPostListView
 )
 # Import views for function based view
 from . import views
@@ -13,6 +14,7 @@ from . import views
 urlpatterns = [
     # Use class based view to render blog-homepage
     path('', PostListView.as_view(), name='blog-home'),
+    path('user/<str:username>', UserPostListView.as_view(), name='user-posts'),
     # Here we render a postdetailview with a primary key (int:pk)
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     # This one will actually share a template with the update view that we're going to be creating and

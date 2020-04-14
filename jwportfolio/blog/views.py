@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 # Import LoginRequiredMixin function to require login to create a new post
 # Import UserPassesTestMixin function to set an update post stick to the author of that post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 # Here we import ListView and DetailView which is a class based view
 from django.views.generic import (
     ListView,
@@ -58,6 +59,19 @@ class PostListView(ListView):
     context_object_name = 'posts'
     # Reorder post from the latest post to oldest post
     ordering = ['-date_posted']
+    paginate_by = 5  # Add a paginate function for 5 posts/page
+
+
+# Create a Postlist for a specific user
+class UserPostListView(ListView):
+    model = Post
+    template_name = 'blog/user_posts.html'
+    context_object_name = 'posts'
+    paginate_by = 5
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user).order_by('-date_posted')
 
 
 class PostDetailView(DetailView):  # We create a PostDetailView for each post

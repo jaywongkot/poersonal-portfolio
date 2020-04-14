@@ -1,5 +1,6 @@
 {% extends "blog/base.html" %}
 {% block content %}
+<h1 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
     <!-- We created a for loop to go through post which we got data from posts dictionary dummy post we created -->
     {% for post in posts %}
         <!-- Here we will access a post variable to access a post dictionary and to get a title variable -->
